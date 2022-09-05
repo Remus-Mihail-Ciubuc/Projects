@@ -1,0 +1,54 @@
+<body>
+    
+<section>
+    
+    <div class="_autentificare_delogare_rezervari">
+       
+        <a id="link" href="/autentificare">Autentificare</a>
+        
+        <%- msgLog %>
+        <a  id="link" href="/de-logare">Deconectare</a>
+        <% if(msgLog!=""){%>
+            <a  id="link" href="/vizRezervari">Rezevarile</a>
+        <%}%>
+    </div>
+    <h1> Masini </h1>
+    <div class="main", id="masini">
+        <% for(i=0;i<listMasini.length; i++){%>
+            
+                <div class="masina">
+                    <div class="imagine">
+                        <img src=<%=listMasini[i].imagine%> alt="citire invalida"  width="460" height="345">
+                    </div>
+                    <div class="date">
+                        <p><h2> <%=listMasini[i].nume%></h2></p>
+                        <p><h3> Descriere: <%=listMasini[i].descriere%></h3></p>
+                       
+                        <form action="/rezervare" method="POST"> 
+                            Nume : <input type="text" name="nameUtil" value="nume"><br>
+                            Email: <input type="email" name="email"><br>
+                            Telefon: <input type="tel" name="tel"><br>
+                            Data Preluarii: <input type="date"  name="Datapreluarii"><br>
+                            Cate zile: <input type="text" id="zile" name="zile"><br><br>
+                            <input type="hidden" name="numeAut" value="<%=listMasini[i].nume%>">
+                            <input type="hidden" name="pretZi" value="<%=listMasini[i].pret%>">
+                            <% if(msgLog!=""){%>
+                                <input type="submit" value="Rezervare">
+                            <%}%>
+                            
+                        </form>
+                        <br>
+                        <input type="hidden" id="pret" value="<%=listMasini[i].pret%>">
+                        <button onclick="CalcularePret()">Calculeaza Pretul in Lei</button><br>
+                        <p id="dataMea5"></p>
+                    </div>
+                    <div class="pret" id="pret">
+                        <h2>Pret: <%=listMasini[i].pret%> lei</h2>
+                    </div>
+                </div>
+            </form>
+            <br>
+        <%}%>
+    </div>
+   
+</body>

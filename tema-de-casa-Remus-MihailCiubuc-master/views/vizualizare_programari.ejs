@@ -1,0 +1,31 @@
+<table border="1">
+    <tr>
+        <th>Nume Automobil</th>
+        <th>Nume Persoana</th>
+        <th>Email</th>
+        <th>Telefon</th>
+        <th>Data Preluarii</th>
+        <th>Nr zile</th>
+        <th>Pret/zi</th>
+        <th>Pret Final</th>
+        <th>Anulare</th>
+    </tr>
+    <% for(i=0;i<nr; i++){%>
+        <tr>
+            <td><%=listRez[i].numeAut%></td>
+            <td><%=listRez[i].nameUtil%></td>
+            <td><%=listRez[i].email%></td>
+            <td><%=listRez[i].tel%></td>
+            <td><%=listRez[i].Datapreluarii%></td>
+            <td><%=listRez[i].zile%></td>
+            <td><%=listRez[i].pretZi%></td>
+            <td><%=listRez[i].pretZi*listRez[i].zile%></td>
+            <td>
+                <form action="/stergeRezervare" method="POST">
+                    <input type="hidden" name="index" value="<%=i%>">
+                    <input type="submit" value="Anuleaza">
+                </form>            
+            </td>
+        </tr>
+    <%}%>
+</table>
