@@ -1,0 +1,68 @@
+
+#include <omp.h>
+#include <iostream>
+/*
+The purpose of this code is to ensure that OpenMP is working and running on multiple
+threads.
+*/
+using namespace std;
+int main(int argc, char* argv[])
+{
+	// This statement should only print once
+	printf("Starting Program!\n");
+	int* A;
+	int* P;
+	int** R;
+	int n = 4;
+	A = (int*)calloc(n, sizeof(int));
+	P = (int*)calloc(n, sizeof(int));
+	R = (int**)calloc(2 * n - 1, sizeof(int));
+	int i,j;
+	for (i = 0; i < 2 * n - 1; ++i)
+	{
+		R[i] = (int*)calloc(n, sizeof(int));
+	}
+
+	A[0] = 2; A[1] = 6; A[2] = 3; A[3] = 8;
+
+#pragma omp parallel for 
+	for(j = 0; j <= n - 1;++j)
+	{
+#pragma omp parallel for 
+		for (i = 0; i <= n - 1; ++i)
+		{
+			if (A[i] < A[j])
+				R[i + n - 1][j] = 1;
+			else
+				R[i + n - 1][j] = 0;
+		}
+	}
+#pragma omp parallel for
+	for (j = 0; j <= n-1; ++j)
+	{
+		for (i = n-2; i >= 0; --i)
+		{
+			R[i][j] = R[2 * i+1][j] + R[2 * i + 2][j];
+			P[j] = R[0][j];
+		}
+	}
+	for (j = 0; j < n; ++j)
+	{
+		printf("%d ", P[j]);
+	}
+	printf("\n");
+	int* B= (int*)calloc(n, sizeof(int));
+	for(j=0;j<n;++j)
+	{
+		B[P[j]] = A[j];
+	}
+	for (j = 0; j < n; ++j)
+	{
+		printf("%d ", B[j]);
+	}
+	// We're out of the parallelized section.
+	// Therefore, this should execute only once
+	
+	cin.get();
+	return 0;
+}
