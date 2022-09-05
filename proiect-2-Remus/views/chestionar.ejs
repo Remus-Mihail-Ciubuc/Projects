@@ -1,0 +1,18 @@
+<section id="chestionar">
+    <h1>Chestionar in care veti afla cateva curiozitati despre jucarii<h1>
+    
+        <form action="/rezultat-chestionar" method="post" role="form">
+            <% intrebari.forEach(function(question, index){ %>
+                <article class="intrebare">
+                    <h2><%= index + 1 %>. <%= question.intrebare %></h2>
+                    <% question.variante.forEach(function(varianta, idVarianta){ %>
+                        <input name="intrebare-<%= index %>" value="<%= idVarianta %>" type="radio" />
+                        <%= varianta %><br>
+                    <% }); %>
+                </article>
+            <% }); %>
+            <input type="submit" value="Trimite chestionarul" />
+    
+        </form>
+    </section>
+    

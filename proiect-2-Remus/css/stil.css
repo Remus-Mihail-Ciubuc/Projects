@@ -1,0 +1,50 @@
+body{
+    background-image:url('https://images.pexels.com/photos/163036/mario-luigi-yoschi-figures-163036.jpeg?cs=srgb&dl=pexels-pixabay-163036.jpg&fm=jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+*{
+    margin:0;
+    padding:0;
+}
+header{
+    background-image:url('https://as2.ftcdn.net/v2/jpg/03/23/24/81/1000_F_323248165_jEy8YPCTLfyJl6ApqDrnniTLdmM9aQP9.jpg');
+    height: 100px;
+    width:100%;
+    background-repeat: no-repeat;
+    background-size:cover;
+    text-align: center;
+    
+}
+
+#chestionar{
+    color:white;
+}
+
+div.nav-left{
+    width: 100%;
+    height: 30px;
+    background-color:white;
+    opacity: 0.5;
+}
+
+div.nav-left a{
+    color:blue;
+    font-size:larger;
+    padding-left: 40px;
+    padding-top:15px;
+}
+
+div.autentificare_delogare{
+    width: 100%;
+    height: 30px;
+    background-color:white;
+}
+
+div.autentificare_delogare a{
+    color:blue;
+    font-size:larger;
+    padding-left: 40px;
+    
+}
+

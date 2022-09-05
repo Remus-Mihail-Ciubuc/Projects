@@ -1,0 +1,40 @@
+
+    <section>
+        <div class="autentificare_delogare">
+            <a id="link" href="/autentificare">Autentificare</a>
+            
+            <%- msgLog %>
+            <a  id="link" href="/de-logare">De-logare</a>
+            
+        </div>
+        <div class="main">
+            <h1> World Of Toys </h1>
+    
+       
+            <p>Log in for purchase</p>
+            <form action="/creare-bd" method="GET">
+                <button type="submit">Creare BD</button>
+            </form>            
+            
+            <form action="/inserare-bd" method="GET">
+                <button type="submit">Incarcare BD</button>
+            </form>
+            <table border="1">
+                <tr>
+                    <th>Produs</th>
+                    <th>Pret</th>
+                </tr>
+                <% for(i=0;i<listProd.length; i++){%>
+                    <tr>
+                        <td><%=listProd[i].name%></td>
+                        <td><%=listProd[i].pret%></td>
+                    </tr>
+                <%}%>
+            </table>
+        </div>
+       
+            
+          
+    
+
+

@@ -1,0 +1,32 @@
+[
+    { 
+        "nume": "Dacia Logan", 
+        "imagine": "imag8.jpg",
+        "pret": "150", 
+        "descriere": "Aer conditionat,5 locuri, 5 usi,6 trepte de viteza"
+    },
+    { 
+        "nume": "BMW Seria3", 
+        "imagine": "imag2.jpg",
+        "pret": "200", 
+        "descriere": "Aer conditionat,5 locuri, 5 usi,cutie automata"
+    },
+    { 
+        "nume": "Skoda Octavia", 
+        "imagine": "imag6.jpg",
+        "pret": "160", 
+        "descriere": "Aer conditionat,5 locuri, 5 usi,6 trepte de viteza"
+    },
+    { 
+        "nume": "Volkswagen Golf", 
+        "imagine": "imag5.jpg",
+        "pret": "150", 
+        "descriere": "Aer conditionat,5 locuri, 5 usi,6 trepte de viteza"
+    },
+    { 
+        "nume": "Mercedes S Class", 
+        "imagine": "imag21.jpg",
+        "pret": "350", 
+        "descriere": "AC,4 locuri,Cutie Automata, Scaune cu masaj"
+    }
+]

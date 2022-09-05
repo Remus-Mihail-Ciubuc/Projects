@@ -1,0 +1,78 @@
+{
+
+    "intrebari" : [
+        {
+            "intrebare": "Cat a durat cel mai lung joc de Monopoly inregistrat vreodata?",
+            "variante": ["O zi", "Un an ", "O saptamana", "45 de zile"],
+            "corect": 3
+        },
+        
+        {
+            "intrebare": "Cine este cel mai mare distribuitor de jucarii din lume.",
+            "variante": ["McDonald's", "Noriel", "LEGO", "Disney"],
+            "corect": 0
+        },
+
+	    {
+            "intrebare": "Care este a doua cea mai veche jucarie descoperita pe pamant?",
+            "variante": ["Papusa", "Yo-yo ", "Mingea", "Masinuta"],
+            "corect": 1
+        },
+
+        {
+            "intrebare": "Care este numele intreg al lui Barbie?",
+            "variante": ["Roberts", "Millicent ", "Barbara", "Barbara Millicent Roberts"],
+            "corect": 3
+        },
+
+        {
+            "intrebare": "Cand au fost create jucariile Play-Doh?",
+            "variante": ["1930", "1935 ", "2000", "1970"],
+            "corect": 0
+        },
+
+        {
+            "intrebare": "De la ce cuvant provine cuvantul Toy?",
+            "variante": ["tool", "toyo ", "plays", "toyo=toyo"],
+            "corect": 0
+        },
+
+        {
+            "intrebare": "Ce a creat Jack Ryan inainte de papusa Barbie?",
+            "variante": ["masini", "papuci ", "rachete", "stilouri"],
+            "corect": 2
+        },
+
+        {
+            "intrebare": "Cate miliarde de case de Monopoly s-au construit pana acum?",
+            "variante": ["5", "6 ", "1", "8"],
+            "corect": 0
+        },
+
+        {
+            "intrebare": "Care joc era prezent in una din 3 case la sfarsitul anilor 1990?",
+            "variante": ["Monopoly", "Scrabble ", "Rummy", "Poker"],
+            "corect": 1
+        },
+
+        {
+            "intrebare": "In ce zona gasim aprox. 40% din totalul jucariilor de pe planeta?",
+            "variante": ["Africa", "Europa ", "Asia", "America"],
+            "corect": 3
+        },
+
+        {
+            "intrebare": "Cate quadralioane de combinatii sunt posibile la cubul rubic?",
+            "variante": ["1000", "100 ", "900", "500"],
+            "corect": 0
+        },
+
+        {
+            "intrebare": "Cine a creat ursuletul Teddy?",
+            "variante": ["Theodore Roosevelt", "George Washington ", "Walt Disney", "Ole Kirk Christiansen"],
+            "corect": 0
+        }
+
+	
+    ]
+}

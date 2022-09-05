@@ -1,0 +1,88 @@
+body{
+    background-image:url('https://jasamicar.com/wp-content/uploads/2020/06/shutterstock_1030925341.png');
+    
+   /* background-position: center;
+    background-repeat: no-repeat;
+    background-size:1920x1080px; */
+    text-align: center;
+
+    
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    
+   /* background-size: 500px200px;
+    width: 2000px;
+    height: 1200px;*/
+   /* width: 90%;
+    height: 90%;*/
+}
+/*{
+    margin:0;
+    padding:0;
+}*/
+/*
+header{
+    background-image:url('https://storage0.dms.mpinteractiv.ro/media/401/781/10387/5123777/1/10main-rentacar.jpg');
+    height: 100px;
+    width:100%;
+    background-repeat: no-repeat;
+    background-size:cover;
+    text-align: center;
+    
+}
+*/
+
+  
+
+div.masina{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+div.imagine{
+    width: 33%;
+}
+.pret{
+    margin-left: 340px;
+    font-size:25px;
+    
+}
+
+div.nav-left{
+   /* width: 100%;
+    height: 30px;*/
+    /*background-color:whitesmoke;
+    opacity: 0.75;*/
+    float: center;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 30px;
+}
+
+
+div.nav-left a{
+    color:blue;
+    font-size:larger;
+    padding-left: 40px;
+    padding-top:15px;
+}
+
+div.autentificare_delogare{
+    width: 100%;
+    height: 50px;
+    background-color:white;
+    font-size: 30px;
+}
+
+div.autentificare_delogare a{
+    color:blue;
+    font-size:30px;
+    padding-left: 150px;
+
+    
+}
