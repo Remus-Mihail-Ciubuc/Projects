@@ -1,0 +1,219 @@
+package com.example.myapplication;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.Toast;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Set;
+import java.util.UUID;
+
+import io.github.controlwear.virtual.joystick.android.JoystickView;
+
+
+public class MainActivity extends AppCompatActivity {
+
+    public static final String DEVICE_NAME = "RemusCar";
+
+    public static final UUID DEVICE_UUID = UUID.fromString("94F39D29-7D6D-437D-973B-FBA39E49D4EE");
+
+    public static BluetoothSocket bluetoothSocket = null;
+
+    public static final byte Speed_Antet = 0x01;
+
+    public static final byte Direction_Antet = 0x02;
+
+    public static final byte Lights_Antet = 0x03;
+
+    public static final byte Color_Antet = 0x04;
+
+    public boolean Is_Connected = false;
+
+    public int Lights_Button_Press;
+
+    public int Color_Button_Press;
+
+    Button Button_Lights;
+
+    Button Button_Color;
+
+    JoystickView directionJoystick;
+    //JoystickView Direction_Joystick;
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button_Lights = findViewById(R.id.button_lights);
+        Button_Color = findViewById(R.id.button_color);
+
+        Button_Lights.setOnClickListener(v -> {
+            Lights_Button_Press = 1;
+            if (Is_Connected) {
+                if (((Button) findViewById(R.id.button_lights)).getText() == "Lights off") {
+                    Lights_Button_Press = 0;
+                    ((Button) findViewById(R.id.button_lights)).setText("Lights on");
+                } else {
+                    ((Button) findViewById(R.id.button_lights)).setText("Lights off");
+                    Lights_Button_Press = 1;
+                }
+                byte[] Data_Lights = new byte[5];
+                Data_Lights[0] = Lights_Antet;
+                byte[] Data_Lights_Vector = ByteBuffer.allocate(4).putInt(Lights_Button_Press).array();
+                System.arraycopy(Data_Lights_Vector, 0, Data_Lights, 1, Data_Lights_Vector.length);
+                try {
+                    bluetoothSocket.getOutputStream().write(Data_Lights);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Connect to the car first!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button_Color.setOnClickListener(v -> {
+            Color_Button_Press = 1;
+            if (Is_Connected) {
+                if (((Button) findViewById(R.id.button_color)).getText() == "Color off") {
+                    Color_Button_Press = 0;
+                    ((Button) findViewById(R.id.button_color)).setText("Color on");
+                } else {
+                    ((Button) findViewById(R.id.button_color)).setText("Color off");
+                    Color_Button_Press = 1;
+                }
+                byte[] Data_Color = new byte[5];
+                Data_Color[0] = Color_Antet;
+                byte[] Data_Color_Vector = ByteBuffer.allocate(4).putInt(Color_Button_Press).array();
+                System.arraycopy(Data_Color_Vector, 0, Data_Color, 1, Data_Color_Vector.length);
+                try {
+                    bluetoothSocket.getOutputStream().write(Data_Color);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Connect to the car first!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        ((SeekBar)findViewById(R.id.seekBar)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                byte[] Data_Acceleration = new byte[5];
+                Data_Acceleration[0] = Speed_Antet;
+                byte[] Data_Acceleration_Vector = ByteBuffer.allocate(4).putInt(progress).array();
+                System.arraycopy(Data_Acceleration_Vector,0,Data_Acceleration,1,Data_Acceleration_Vector.length);
+                if(Is_Connected){
+                    try {
+                        bluetoothSocket.getOutputStream().write(Data_Acceleration);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        findViewById(R.id.button_connect).setOnClickListener(v -> {
+            findViewById(R.id.button_connect).setEnabled(false);
+            if(bluetoothSocket != null){
+                Is_Connected = false;
+                try {
+                    bluetoothSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bluetoothSocket = null;
+                ((Button)findViewById(R.id.button_connect)).setText("Connect");
+            }else{
+                if(Bluetooth_Connect()){
+                    ((Button)findViewById(R.id.button_connect)).setText("Disconnect");
+                    Is_Connected = true;
+                }else{
+                    Toast.makeText(getApplicationContext(), "Connect failed!", Toast.LENGTH_LONG).show();
+                    Is_Connected = false;
+                }
+            }
+            findViewById(R.id.button_connect).setEnabled(true);
+        });
+
+
+        directionJoystick = (JoystickView) findViewById(R.id.joystick);
+
+        directionJoystick.setOnMoveListener(new JoystickView.OnMoveListener(){
+
+            @Override
+            public void onMove(int angle, int strength) {
+                //Log.d("joystick_smek", "" + angle + "  " + strength);
+                // Log.d()
+                //angle = direction
+                byte[] Data_Direction = new byte[5];
+                Data_Direction[0] = Direction_Antet;
+                byte[] Data_Direction_Vector = ByteBuffer.allocate(4).putInt(angle).array();
+                System.arraycopy(Data_Direction_Vector, 0, Data_Direction, 1, Data_Direction_Vector.length);
+                if (Is_Connected) {
+                    try {
+                        bluetoothSocket.getOutputStream().write(Data_Direction);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        Log.d("joystick_smek", " " + directionJoystick.isEnabled());
+
+    }
+
+    private static boolean Bluetooth_Connect() {
+        boolean connectionSuccess = false;
+        try {
+            Set<BluetoothDevice> mPairedDevices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+            if (mPairedDevices.size() > 0) {
+                for (BluetoothDevice device : mPairedDevices) {
+                    if (device.getName().equals(DEVICE_NAME)) {
+                        if(device.getBondState() != BluetoothDevice.BOND_BONDED){
+                            // unpaired
+                            continue;
+                        }
+                        String address = device.getAddress();
+                        if (bluetoothSocket == null) {
+                            BluetoothDevice remoteDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
+//                            UUID deviceUuid = device.getUuids()[0].getUuid();
+                            bluetoothSocket = remoteDevice.createInsecureRfcommSocketToServiceRecord(DEVICE_UUID);
+                            bluetoothSocket.connect();
+                            connectionSuccess = true;
+                        }
+                        break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            connectionSuccess = false;
+            bluetoothSocket = null;
+        }
+        return connectionSuccess;
+    }
+}

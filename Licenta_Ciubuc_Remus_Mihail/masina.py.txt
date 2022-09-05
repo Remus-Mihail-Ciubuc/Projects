@@ -1,0 +1,385 @@
+import RPi.GPIO as GPIO
+import time
+import threading
+import struct
+from bluetooth_server import *
+
+from apds9960.const import *
+from apds9960 import APDS9960
+import smbus
+import atexit
+
+Speed_Antet = 0x01
+Direction_Antet = 0x02
+Lights_Antet = 0x03
+Color_Antet = 0x04
+
+Lights_Pin = 17
+Stop_Pin = 18
+Trig_Pin = 24
+Echo_Pin = 25
+Blink_Right_Pin = 22
+Blink_Left_Pin = 27
+
+Direction_Front_Right_Motor = 12 #m3
+Front_Right_Motor = 16
+Direction_Front_Left_Motor = 20 #m1
+Front_Left_Motor = 21
+Direction_Back_Right_Motor = 6 #m4
+Back_Right_Motor = 13
+Direction_Back_Left_Motor = 19 #m2
+Back_Left_Motor = 26
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup([Lights_Pin, Stop_Pin, Blink_Left_Pin, Blink_Right_Pin], GPIO.OUT)
+GPIO.setup([Direction_Front_Right_Motor, Direction_Front_Left_Motor, Direction_Back_Right_Motor, Direction_Back_Left_Motor], GPIO.OUT)
+GPIO.setup(Trig_Pin, GPIO.OUT)
+GPIO.setup(Echo_Pin, GPIO.IN)
+
+GPIO.setup([Front_Right_Motor,Front_Left_Motor,Back_Right_Motor,Back_Left_Motor], GPIO.OUT)
+
+pwm_Front_Right_Motor = GPIO.PWM(Front_Right_Motor, 100)
+pwm_Front_Right_Motor.start(0)
+
+pwm_Front_Left_Motor = GPIO.PWM(Front_Left_Motor, 100)
+pwm_Front_Left_Motor.start(0)
+
+pwm_Back_Right_Motor = GPIO.PWM(Back_Right_Motor, 100)
+pwm_Back_Right_Motor.start(0)
+
+pwm_Back_Left_Motor = GPIO.PWM(Back_Left_Motor, 100)
+pwm_Back_Left_Motor.start(0)
+
+pwm_Blink_Left = GPIO.PWM(Blink_Left_Pin, 100)
+pwm_Blink_Left.start(0)
+pwm_Blink_Right = GPIO.PWM(Blink_Right_Pin, 100)
+pwm_Blink_Right.start(0)
+
+GPIO.setup(Trig_Pin,GPIO.OUT)
+GPIO.setup(Echo_Pin,GPIO.IN)
+GPIO.output(Trig_Pin, GPIO.LOW)
+
+Distance = 0
+Left = -1
+Right = 1
+Center = 0
+Direction_Blink = Center
+
+Direction_Move = 0
+Current_Speed = 0
+Forward = 1
+Forward_Right = 2
+Forward_Left = 3
+Backward = 4
+Backward_Right = 5
+Backward_Left = 6 
+
+DriveByGesture = 0
+
+def thread_ultrasonic():
+	GPIO.output(Trig_Pin, GPIO.HIGH)
+	time.sleep(0.0001)
+	GPIO.output(Trig_Pin, GPIO.LOW)
+
+	while GPIO.input(Echo_Pin)==0:
+		Start = time.time()
+	while GPIO.input(Echo_Pin)==1:
+		End = time.time()
+
+	Duration = End - Start  
+
+	Distance = round(durata * 17150, 2)
+
+def should_break():
+	if Distance <= 20:
+		return True
+	else:
+		return False
+
+def thread_blinking():
+	global Direction_Move, Left, Right, Center
+	while True:
+		if Direction_Move == Center:
+			continue
+
+		if Direction_Move == Left: 
+			pwm_Blink_Left.ChangeDutyCycle(100)
+			time.sleep(0.5)
+			pwm_Blink_Left.ChangeDutyCycle(0)
+			time.sleep(0.5)				
+
+		if Direction_Move == Right:
+			pwm_Blink_Right.ChangeDutyCycle(100)
+			time.sleep(0.5)
+			pwm_Blink_Right.ChangeDutyCycle(0)
+			time.sleep(0.5)
+
+
+def thread_gesturi():
+	global DriveByGesture
+	global Distance, Current_Speed, Direction_Move, DriveByGesture
+
+	dirs = {
+		APDS9960_DIR_NONE: "none",
+		APDS9960_DIR_LEFT: "left",
+		APDS9960_DIR_RIGHT: "right",
+		APDS9960_DIR_UP: "up",
+		APDS9960_DIR_DOWN: "down",
+		APDS9960_DIR_NEAR: "near",
+		APDS9960_DIR_FAR: "far",
+	}
+
+
+	try:
+		port = 1
+		bus = smbus.SMBus(port)
+		time.sleep(1)
+		apds = APDS9960(bus)
+
+		OldLight = -1
+        apds.enableLightSensor()
+		apds.enableGestureSensor()
+		while True:
+			time.sleep(0.5)
+			NewLight = apds.readAmbientLight()
+            Red = apds.readRedLight()
+            Green = apds.readGreenLight()
+            Blue = apds.readBlueLight()
+            if NewLight != OldLight:
+                print("Light={} (R: {}, G: {}, B: {})".format(NewLight, r, g, b))
+            OldLight = ActualLight
+			if apds.isGestureAvailable():
+				motion = apds.readGesture()
+				print("Gesture={}".format(dirs.get(motion, "unknown")))
+				if DriveByGesture:
+					if motion == APDS9960_DIR_UP:
+						Direction_Move = Forward
+						Current_Speed = 40
+					elif motion == APDS9960_DIR_DOWN:
+						Direction_Move = Backward
+						Current_Speed = 40
+					elif motion == APDS9960_DIR_LEFT:
+						Direction_Move = Forward_Left
+						Current_Speed = 70
+					elif motion == APDS9960_DIR_RIGHT:
+						Direction_Move = Forward_Right
+						Current_Speed = 70
+				time.sleep(1)
+				Direction_Move = 0
+				Current_Speed = 0
+	finally:
+		GPIO.cleanup()
+
+
+
+def thread_move():
+	global Distance, Current_Speed, Direction_Move, DriveByGesture
+	while True:
+		if Direction_Move == Forward_Right and should_break() == False:
+
+			GPIO.output(Direction_Front_Right_Motor, 0)
+			pwm_Front_Right_Motor.start(0)
+
+			GPIO.output(Direction_Front_Left_Motor, 1)			
+			pwm_Front_Left_Motor.start(Current_Speed)
+
+			GPIO.output(Direction_Back_Right_Motor, 0)
+			pwm_Back_Right_Motor.start(0)
+
+			GPIO.output(Direction_Back_Left_Motor, 1)
+			pwm_Back_Left_Motor.start(Current_Speed)
+
+		elif Direction_Move == Forward_Right and should_break() == True:
+
+			GPIO.output(Direction_Front_Right_Motor, 0)
+			pwm_Front_Right_Motor.start(0)
+
+			GPIO.output(Direction_Front_Left_Motor, 0)
+			pwm_Front_Left_Motor.start(int(((Current_Speed/100.0) ** 2) * 100))
+
+			GPIO.output(Direction_Back_Right_Motor, 0)
+			pwm_Back_Right_Motor.start(0)
+
+			GPIO.output(Direction_Back_Left_Motor, 0)
+			pwm_Back_Left_Motor.start(int(((Current_Speed/100.0) ** 2) * 100))
+
+			time.sleep(0.8 * ((Current_Speed/100.0) ** 2))
+
+			GPIO.output(Stop_Pin,1)
+
+		elif Direction_Move == Forward and should_break() == False:
+
+			GPIO.output(Direction_Front_Right_Motor, 1)
+			pwm_Front_Right_Motor.start(Current_Speed)
+
+			GPIO.output(Direction_Front_Left_Motor, 1)			
+			pwm_Front_Left_Motor.start(Current_Speed)
+
+			GPIO.output(Direction_Back_Right_Motor, 1)
+			pwm_Back_Right_Motor.start(100-Current_Speed)
+
+			GPIO.output(Direction_Back_Left_Motor, 1)
+			pwm_Back_Left_Motor.start(Current_Speed)
+
+			GPIO.output(Stop_Pin,0)
+
+		elif Direction_Move == Forward and should_break() == True:	
+
+			GPIO.output(Direction_Front_Right_Motor, 0)
+			pwm_Front_Right_Motor.start(int(((Current_Speed/100.0) ** 2) * 100))
+
+			GPIO.output(Direction_Front_Left_Motor, 0)
+			pwm_Front_Left_Motor.start(int(((Current_Speed/100.0) ** 2) * 100))
+
+			GPIO.output(Direction_Back_Right_Motor, 0)
+			pwm_Back_Right_Motor.start(int(((Current_Speed/100.0) ** 2) * 100))
+
+			GPIO.output(Direction_Back_Left_Motor, 0)
+			pwm_Back_Left_Motor.start(int(((Current_Speed/100.0) ** 2) * 100))
+
+			time.sleep(0.8 * ((Current_Speed/100.0) ** 2))
+
+			GPIO.output(Stop_Pin,1)
+
+		elif Direction_Move == Forward_Left and should_break()==False:
+
+			GPIO.output(Direction_Front_Right_Motor, 0)
+			pwm_Front_Right_Motor.start(Current_Speed)
+
+			GPIO.output(Direction_Front_Left_Motor, 0)			
+			pwm_Front_Left_Motor.start(0)
+
+			GPIO.output(Direction_Back_Right_Motor, 0)
+			pwm_Back_Right_Motor.start(Current_Speed)
+
+			GPIO.output(Direction_Back_Left_Motor, 0)
+			pwm_Back_Left_Motor.start(0)
+
+			GPIO.output(Stop_Pin,0)
+
+		elif Direction_Move == Forward_Left and should_break()==True:	
+
+			GPIO.output(Direction_Front_Right_Motor, 0)			
+			pwm_Front_Right_Motor.start(int(((Current_Speed/100.0) ** 2) * 100))
+
+			GPIO.output(Direction_Front_Left_Motor, 0)
+			pwm_Front_Left_Motor.start(0)
+
+			GPIO.output(Direction_Back_Right_Motor, 0)
+			pwm_Back_Right_Motor.start(int(((Current_Speed/100.0) ** 2) * 100))
+
+			GPIO.output(Direction_Back_Left_Motor, 0)
+			pwm_Back_Left_Motor.start(0)
+
+			time.sleep(0.8 * ((Current_Speed/100.0) ** 2))
+			GPIO.output(Stop_Pin,1)
+
+		elif Direction_Move == Backward:
+
+			GPIO.output(Direction_Front_Right_Motor, 1)
+			pwm_Front_Right_Motor.start(100-Current_Speed)
+
+			GPIO.output(Direction_Front_Left_Motor, 1)	
+			pwm_Front_Left_Motor.start(100-Current_Speed)
+
+			GPIO.output(Direction_Back_Right_Motor, 1)
+			pwm_Back_Right_Motor.start(100-Current_Speed)
+
+			GPIO.output(Direction_Back_Left_Motor, 1)
+			pwm_Back_Left_Motor.start(100-Current_Speed)
+
+			GPIO.output(Stop_Pin,0)		
+
+		elif Direction_Move == Backward_Left:
+
+			GPIO.output(Direction_Front_Right_Motor, 1)			
+			pwm_Front_Right_Motor.start(100-Current_Speed)
+
+			GPIO.output(Direction_Front_Left_Motor, 0)	
+			pwm_Front_Left_Motor.start(0)
+
+			GPIO.output(Direction_Back_Right_Motor, 1)
+			pwm_Back_Right_Motor.start(100-Current_Speed)
+
+			GPIO.output(Direction_Back_Left_Motor, 0)
+			pwm_Back_Left_Motor.start(0)
+
+			GPIO.output(Stop_Pin,0)
+
+		elif Direction_Move == Backward_Right:
+
+			GPIO.output(Direction_Front_Right_Motor, 0)
+			pwm_Front_Right_Motor.start(0)
+
+			GPIO.output(Direction_Front_Left_Motor, 1)			
+			pwm_Front_Left_Motor.start(100-Current_Speed)
+
+			GPIO.output(Direction_Back_Right_Motor, 0)
+			pwm_Back_Right_Motor.start(0)
+
+			GPIO.output(Direction_Back_Left_Motor, 1)
+			pwm_Back_Left_Motor.start(100-Current_Speed)
+
+			GPIO.output(Stop_Pin,0)
+		time.sleep(0.1)
+
+threading.Thread(target=thread_move).start()
+threading.Thread(target=thread_gesturi).start()
+threading.Thread(target=thread_blinking).start()
+threading.Thread(target=thread_ultrasonic).start()
+
+server = RfcommServer()
+print("inainte accept")
+server.accept_client()
+print("dupa accept")
+
+Current_Speed = 0
+while True:
+	Check_Antet = server.client_sock.recv(1)
+	if Check_Antet[0] == Direction_Antet:
+		Direction_Info = server.client_sock.recv(4)
+		Direction_Info = struct.unpack(">i", Direction_Info)
+
+		if DriveByGesture:
+			continue
+		if Direction_Info[0] > 270 and Direction_Info[0] < 340:
+			Direction_Move = Forward_Right
+
+		elif Direction_Info[0] >= 340 and Direction_Info[0] < 20:
+			Direction_Move = Forward
+
+		elif Direction_Info[0] >= 20 and Direction_Info[0] < 90:
+			Direction_Move = Forward_Left
+
+		elif Direction_Info[0] >= 90 and Direction_Info[0] < 160:
+			Direction_Move = Backward_Left
+
+		elif Direction_Info[0] >= 160 and Direction_Info[0] < 200:
+			Direction_Move = Backward
+
+		elif Direction_Info[0] >= 200 and Direction_Info[0]<=269: 
+			Direction_Move = Backward_Right
+		elif Direction_Info[0] == 0:
+			Direction_Move = 0
+
+	if Check_Antet[0] == Speed_Antet:
+		Speed_Info = server.client_sock.recv(4)
+		Speed_Info = int.from_bytes(Speed_Info, byteorder="big")
+		if DriveByGesture:
+			continue
+		Current_Speed = Speed_Info
+
+	if Check_Antet[0] == Lights_Antet:
+		Lights_Info = server.client_sock.recv(4)
+		Lights_Info = int.from_bytes(Lights_Info, byteorder="big")
+		if Lights_Info == 1:
+			GPIO.output(Lights_Pin, 1)
+		if Lights_Info == 0:
+			GPIO.output(Lights_Pin, 0)
+
+	if Check_Antet[0] == Color_Antet:
+		Color_Info = server.client_sock.recv(4)
+		Color_Info = int.from_bytes(Color_Info, byteorder="big")
+		DriveByGesture = Color_Info

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button_lights"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/button_connect"
+        android:layout_alignTop="@+id/seekBar"
+        android:layout_alignEnd="@+id/button_color"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="-86dp"
+        android:layout_marginEnd="114dp"
+        android:layout_marginBottom="236dp"
+        android:rotation="-270"
+        android:text="lights on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/seekBar"
+        android:layout_alignTop="@+id/seekBar"
+        android:layout_alignEnd="@+id/seekBar"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="217dp"
+        android:layout_marginTop="-87dp"
+        android:layout_marginEnd="-20dp"
+        android:layout_marginBottom="236dp"
+        android:rotation="-270"
+        android:text="color on"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/joystick"
+        android:layout_alignStart="@+id/seekBar"
+        android:layout_alignEnd="@+id/seekBar"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-8dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="205dp"
+        android:layout_marginBottom="236dp"
+        android:rotation="-270"
+        android:text="connect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="310dp"
+        android:layout_height="230dp"
+        android:layout_below="@+id/joystick"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="122dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginBottom="-32dp"
+        android:rotation="360"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/joystick"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.944"
+        tools:ignore="MissingConstraints" />
+
+    <io.github.controlwear.virtual.joystick.android.JoystickView
+        android:rotation="90"
+        android:id="@+id/joystick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/jmek"
+        app:JV_borderWidth="4dp"
+        app:JV_buttonColor="#FF6E40"
+        app:JV_buttonImage="@drawable/em_mare"
+        app:JV_buttonSizeRatio="15%"
+        app:JV_fixedCenter="false"
+        tools:ignore="MissingClass,MissingConstraints"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+</RelativeLayout>
