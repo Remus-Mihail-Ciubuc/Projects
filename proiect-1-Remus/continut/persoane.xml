@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persoane>
+    <persoana id="1">
+        <nume>Popescu</nume>
+        <prenume>Ion</prenume>
+        <varsta>23</varsta>
+        <adresa>
+            <strada>Nucilor</strada>
+            <numar>10</numar>
+            <localitate>Harlau</localitate>
+            <judet>Iasi</judet>
+            <tara>Romania</tara>
+        </adresa>
+    </persoana>
+
+    <persoana id="2">
+        <nume>Popescu</nume>
+        <prenume>Vasile</prenume>
+        <varsta>21</varsta>
+        <adresa>
+            <strada>Aviatorilor</strada>
+            <numar>13</numar>
+            <localitate>Tomesti</localitate>
+            <judet>Iasi</judet>
+            <tara>Romania</tara>
+        </adresa>
+    </persoana>
+
+    <persoana id="3">
+        <nume>Popescu</nume>
+        <prenume>Andrei</prenume>
+        <varsta>28</varsta>
+        <adresa>
+            <strada>Aviatiei</strada>
+            <numar>15</numar>
+            <localitate>Tutora</localitate>
+            <judet>Iasi</judet>
+            <tara>Romania</tara>
+        </adresa>
+    </persoana>
+
+    <persoana id="4">
+        <nume>Moris</nume>
+        <prenume>Jack</prenume>
+        <varsta>38</varsta>
+        <adresa>
+            <strada>Pavlov</strada>
+            <numar>7</numar>
+            <localitate>Belcesti</localitate>
+            <judet>Bacau</judet>
+            <tara>Romania</tara>
+        </adresa>
+    </persoana>
+
+    <persoana id="5">
+        <nume>Narcis</nume>
+        <prenume>Petru</prenume>
+        <varsta>46</varsta>
+        <adresa>
+            <strada>Lincoln</strada>
+            <numar>12</numar>
+            <localitate>Urecheni</localitate>
+            <judet>Neamt</judet>
+            <tara>Romania</tara>
+        </adresa>
+    </persoana>
+
+</persoane>

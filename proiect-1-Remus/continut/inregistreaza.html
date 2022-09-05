@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<head>
+    <title>
+
+    </title>
+    <link rel="stylesheet" href="css/stil.css"></link>
+    <style>
+        .imagine{
+            background:url(imagini/imagine.png)no-repeat fixed center;
+            background-size:cover;
+        }
+
+    </style>
+</head>
+
+<body class="imagine">
+
+    <header>
+        <div style="text-align: left"><img src="https://d17fnq9dkz9hgj.cloudfront.net/breed-uploads/2018/08/Boxer-482x260.png?bust=1556225793&width=355" width="180" />&nbsp; <b>Boxer Club </b> </div>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Acasa</a>
+        <a class="active" href="inregistreaza.html">Inregistreaza</a>
+        <a href="video.html">Video</a>
+        <a href="despre_html.html">Despre</a>
+        <a href="Desen.html">Desen</a>
+        <a href="Invat_js.html">Invat_js</a>
+    </nav>
+
+    <form>
+
+        <div id="nav">
+            <button onclick="location.href = 'anotherfile.html';" id="myButton" class="float-left submit-button">Home</button>
+            <div id="nav">
+                <fieldset>
+                    <legend>Informatii generale:</legend>
+                    <label for="Nume_utilizator">Nume utilizator:</label>
+                    <input type="text" id="Nume_utilizator" name="Nume_utilizator"><br><br>
+
+                    <label for="parola">Parola:</label>
+                    <input type="password" id="parola" name="parola"><br><br>
+
+                    <label for="nume">Nume:</label>
+                    <input type="text" id="nume" name="nume"><br><br>
+
+                    <label for="prenume">Prenume:</label>
+                    <input type="text" id="prenume" name="prenume"><br><br>
+
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email"><br><br>
+
+                    <label for="telefon">Telefon:</label>
+                    <input type="tel" id="telefon" name="telefon"><br><br>
+
+                </fieldset>
+                <fieldset>
+                    <legend>Informatii personale:</legend>
+
+                    <label for="sexul">Sexul:</label>
+                    <select name="sexul" id="sexul">
+                        <option value="masculin">Masculin</option>
+                        <option value="feminin">Feminin</option>
+                    </select><br><br>
+
+                    <label for="mancareapreferata">Mancarea preferata:</label>
+                    <input list="mancarea_preferata" name="mancareapreferata" id="mancarea_preferata2"><br><br>
+
+                    <datalist id="mancarea_preferata">
+                        <option value="Pizza">
+                        <option value="Hamburger">
+                        <option value="Salata">
+                        <option value="Shaorma">
+                        <option value="Supa">
+                    </datalist>
+
+                    <label for="culoare">Culoarea preferata:</label>
+                    <input type="color" id="culoare" name="culoare"><br><br>
+
+                    <label for="data_nastere">Data nasterii:</label>
+                    <input type="date" id="data_nastere" name="data_nastere"><br><br>
+
+
+                    <label for="ora_nastere">Ora nasterii:</label>
+                    <input type="time" id="ora_nastere" name="ora_nastere"><br><br>
+
+                    <label for="varsta">Varsta:</label>
+                    <input type="range" id="varsta" name="varsta"><br><br>
+
+                    <label for="adresa">Adresa paginii personale:</label>
+                    <input type="url" id="adresa" name="adresa"><br><br>
+
+                    <label for="descriere">Descriere:</label>
+
+                    <textarea id="descriere" name="descriere" rows="4" cols="50">
+                    </textarea>
+                    <p>
+                        <input type="submit" value="Înregistrează" disabled="disabled" />
+
+                    </p>
+
+
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</body>

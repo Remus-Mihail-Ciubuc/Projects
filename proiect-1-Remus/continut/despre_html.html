@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="css/stil.css">
+    <title>Programare web</title>
+    <style>
+        .imagine{
+            background:url(imagini/imagine.png)no-repeat fixed center;
+            background-size:cover;
+        }
+
+    </style>
+</head>
+
+<body class="imagine">
+    <header>
+        <div style="text-align: left"><img src="https://d17fnq9dkz9hgj.cloudfront.net/breed-uploads/2018/08/Boxer-482x260.png?bust=1556225793&width=355" width="180" />&nbsp; <b>Boxer Club </b> </div>
+    </header>
+
+    <nav class="topnav">
+        <a href="index.html">Acasa</a>
+        <a href="inregistreaza.html">Inregistreaza</a>
+        <a href="video.html">Video</a>
+        <a class="active" href="despre.html">Despre</a>
+        <a href="Desen.html">Desen</a>
+        <a href="Invat_js.html">Invat_js</a>
+    </nav>
+
+
+    <h1>Programare web<b></b></h1>
+    <h2>Limbajul HTML<b></b></p></h2>
+    <p><b>HTML(HyperText Markup Language)</b><i> este un limbaj de marcare </i>utilizat pentru a crea pagini web.</p>
+    <p>Un exemplu de cod html il gasiti in imaginea urmatoare care se afla la adresa <a href="">http://upload.wikimedia.org/wikipedia/commons/e/e4/HTML_logo.png</a>.</p>
+    <p>Imaginea are atributul height de valoare 147.</p>
+    <img src="http://upload.wikimedia.org/wikipedia/commons/e/e4/HTML_logo.png" width="150">
+    <p><b><i>Tag-urile</i></b> html cele mai utilizate in realizarea tabelelor sunt:</p>
+
+    <table style="width :40%">
+        <tr>
+            <th>table</th>
+            <td>defineste un tabel</td>
+        </tr>
+        <tr>
+            <th>tr</th>
+            <td>un rand intr-un tabel</td>
+        </tr>
+        <tr>
+            <th>td</th>
+            <td>o celula intr-un tabel</td>
+        </tr>
+    </table>
+
+    <p><b>Observatie:</b> Pentru a pune un contur unui tabel se poate (dar nu se recomanda) sa se puna atributul <small> border="1"</small>.</p>
+</body>
+
+<p> La validare va da eroarea: <i> The border attribute on the table element is obsolete</i>. </p>
+<br />
+<p> Formularele se pot crea cu ajutorul tag-ului <small> form </small> care poate contine tag-urile: <small> input, textarea, label, select, option, button.</small></p>
+<p> Pentru mai multe detalii consultati cursul sau tutorialul <a href="">HTML Forms and Inputs</a> de la adresa <a href="">http://www.w3schools.com/html/html_forms.asp</a>.</p>
+<br />
+<p> Un exemplu de formular este urmatorul: </p>
+
+<label for="Nume_utilizator">Nume:</label>
+<input type="text" id="Nume_utilizator" name="Nume_utilizator" value="nume">
+<br>
+
+<label for="prenume">Prenume:</label>
+<input type="text" id="prenume" name="prenume" value="prenume">
+<br>
+
+<label for="parola">Parola:</label>
+<input type="password" id="parola" name="parola" value="***">
+<br>
+
+
+
+<label for="culoare">Culoarea preferata:</label>
+<select name="culoare" id="culoare">
+    <option value="rosu">Rosu</option>
+    <option value="albastru">Albastru</option>
+    <option value="galben">Galben</option>
+    <option value="gri">Gri</option>
+    <option value="verde">Verde</option>
+</select>
+<br>
+
+<label for="descriere">Descriere:</label>
+
+
+<textarea id="descriere" name="descriere" rows="4" cols="40">
+    
+</textarea>
+<p>
+    <input type="checkbox">
+    <label>Sunt de acord cu conditiile</label>
+    <br />
+    <br />
+    <button>Inregistreaza</button>
+    <br />
+</p>
+
+<p>Pentru a crea liste se pot folosi tag-urile:</p>
+        <p>&emsp; i. ul - lista neordonata</p>
+        <p>&emsp; ii. ol - lista ordonata</p>
+        <p>&emsp; iii. li - item din lista</p>
+        <p>&emsp; iv. dl - lista cu descrieri</p>
+        <p>&emsp; dt - termen dintr-o lista cu descrieri</p>
+        <p>&emsp; dd - descrierea dintr-o lista cu descrieri</p>
+        <br/>
+        <p>Pentru a insera un document HTMP în altul se poate folosi tag-ul &lt;iframe>.</p>
+        <p>Astfel, exemplul de mai jos inserează conținutul de la adresa <a href="">http://html.spec.whatwg.org/multipage/</a>.</p>
+        <iframe src="http://html.spec.whatwg.org/multipage/" width="700" height="180"> </iframe>
+        <hr>
+        <p>&copy;. 2020. Programare web</p>
+
+    </form>
